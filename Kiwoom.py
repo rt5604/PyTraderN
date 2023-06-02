@@ -157,7 +157,9 @@ class Kiwoom(QAxWidget):
         """
 
         print("receiveTrData 실행: screenNo={},requestName={},trCode={},recordName={},inquiry={}".format(screenNo, requestName, trCode, recordName, inquiry))
-        print("trCode = {}".format(trCode))
+        
+        requestName = requestName.encode('ISO8859-1').decode('euc-kr')
+        print("requestName = {}".format(requestName))
 
         # 주문번호와 주문루프
         self.orderNo = self.commGetData(trCode, "", requestName, 0, "주문번호")
@@ -217,6 +219,7 @@ class Kiwoom(QAxWidget):
 
             for key in keyList:
                 value = self.commGetData(trCode, "", requestName, 0, key)
+                print("key={}, value={}".format(key, value))
 
                 if key.startswith("총수익률"):
                     value = self.changeFormat(value, 1)
@@ -241,6 +244,8 @@ class Kiwoom(QAxWidget):
                         value = self.changeFormat(value, 2)
                     elif key != "종목명":
                         value = self.changeFormat(value)
+                    else:
+                        value = value.encode('ISO8859-1').decode('euc-kr')  # James
 
                     stock.append(value)
                     print("i={}, key={}, value={}".format(i, key, value))
@@ -958,7 +963,7 @@ class Kiwoom(QAxWidget):
             formatData = '{:-,d}'.format(d)
 
         elif percent == 1:
-            f = int(data) / 100
+            f = float(data) / 100
             formatData = '{:-,.2f}'.format(f)
 
         elif percent == 2:

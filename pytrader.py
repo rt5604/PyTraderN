@@ -185,6 +185,7 @@ class MyWindow(QMainWindow, ui):
 
         for i in range(cnt):
             row = self.kiwoom.opw00018Data['stocks'][i]
+            print("{}: row={}".format(i, row))
 
             for j in range(len(row)):
                 item = QTableWidgetItem(row[j])
